@@ -1,0 +1,75 @@
+name: hdca
+
+channels:
+ - conda-forge
+ - anaconda
+ - bioconda
+ - defaults
+ - r
+ - rdonnelly
+ - psi4
+ - free
+ - fastchan
+ - ccordoba12
+ - grst
+ - Eugene_T
+ - letaylor
+
+dependencies:
+ - r-base>=4
+ - rstudio
+ - bioconductor-scran
+ - bioconductor-biomart
+ - bioconductor-EBImage
+ - bioconductor-glmgampoi
+ - r-future
+ - r-future.apply
+ - r-RISmed
+ - r-rsvg
+ - r-magick
+ - r-wgcna
+ - r-grimport2
+ - r-gridsvg
+ - r-rgeos
+ - r-rgl
+ - r-plot3D
+ - r-raster
+ - r-spatstat
+ - r-scpred
+ - r-pheatmap
+ - r-harmony
+ - r-rafalib
+ - r-enrichr
+ - r-devtools
+ - r-biocmanager
+ - r-dplyr
+ - r-igraph
+ - r-seurat<4.0
+ - r-umap
+ - r-grr
+ - r-hdf5r
+ - r-bookdown
+ - r-venn
+ - r-uwot
+ - r-RcppHNSW
+ - r-optparse
+ - r-fields
+ - r-ggraph
+ - r-checkmate
+ - r-tidygraph
+ - requests
+ - r-spam
+ - r-stringi
+ - wget
+ - compilers
+ - pip
+ - pip:
+   - umap-learn==0.4.6
+   - louvain
+   - leidenalg
+
+# Manual installation of packages that are not in conda:
+
+# remotes::install_github('chris-mcginnis-ucsf/DoubletFinder', dependencies=FALSE)
+# install.packages('clustree', dependencies=FALSE)
+# remotes::install_github('satijalab/seurat-data', dependencies=FALSE)

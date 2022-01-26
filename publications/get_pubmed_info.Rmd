@@ -1,0 +1,196 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+# Load libraries
+
+
+```{r}
+# remotes::install_github("skoval/RISmed")
+library(RISmed)
+library(beeswarm)
+library(niceRplots)
+```
+
+# Query data from Pubmed
+
+```{r}
+search_topic <- '"Nilsson Mats"[Full Author Name]'
+search_query <- EUtilsSummary(search_topic,type="efetch",db="pubmed")
+summary(search_query)
+search_query@querytranslation <- '("Nilsson Mats"[Full Author Name])'
+
+records <- EUtilsGet(search_query)
+EUt
+records@Query
+
+?EUtilsQuery
+search_query@querytranslation
+
+RISmed::Title(records)
+RISmed::Title(QueryId(search_query))
+str(records)
+
+for(i in slotNames(records)){print(slot(object = records,name = i))}
+
+
+```
+
+
+# Get journal Impact Factor
+
+```{r}
+IF <- as.data.frame(readxl::read_xlsx("2020ImpactFactordetail.xlsx"))
+colnames(IF) <- IF[1,]
+IF <- IF[-1,]
+IF$`Full Journal Title` <- casefold(IF$`Full Journal Title`)
+head(IF)
+```
+
+# Function to format article list
+
+```{r}
+reformat_journal_name <- function(journals){
+  journals <- casefold(journals)
+  journals <- gsub(" [(:.;].*","",journals)
+  journals <- gsub("&amp;","&",journals)
+  journals <- gsub(",","",journals)
+  journals <- gsub("^the ","",journals)
+  journals <- gsub("'","",journals)
+  return(journals)
+}
+
+fix_names <-  function(x){
+  x <- iconv(x, from = 'UTF-8', to = 'ASCII//TRANSLIT')
+  x <- gsub("[[:punct:]]","",x)
+  return(x)
+}
+```
+
+# Match IF for each publication
+
+```{r}
+terms <- c('Joakim Lundeberg',
+           'Emma Lundberg',
+           '"Nilsson, Mats"[Full Author Name]',
+           'Sten Linnarsson',
+           'Christos Samakovlis',
+           'Erik Sundström')
+# terms <- c('Czarnewski')
+all_info <- lapply(terms , function(x){
+  message(paste0('processing:\t',x))
+  x <- fix_names(x)
+  search_query <- EUtilsSummary(x)
+  records <- EUtilsGet(search_query)
+  return(records)
+})
+names(all_info) <- terms
+
+
+res <- lapply(all_info , function(x){
+  journals <- reformat_journal_name(x@Title)
+  print(journals)
+  xxx <- as.numeric(IF$`Journal Impact Factor`[ match( journals , IF$`Full Journal Title` ) ])
+  return( setNames( xxx , journals )  )
+})
+names(res) <- terms
+```
+
+
+
+```{r}
+ifs <- t(as.matrix(unlist(res)))
+rownames(ifs) <- "IF"
+pis <- sub( "[.].*" , "" , colnames(ifs) )
+
+violins( data = ifs,
+         genes = rownames(ifs),
+         clustering = factor(pis),
+         transparency = 50,
+         pt.col = "black",
+         srt=35,
+         smooth = 1)
+
+par(mar=c(10,4,2,1))
+beeswarm(c(ifs) ~ pis, cex=.2, pwcol = (1:30) [ factor(pis) ] ,las=2,xlab="",ylab="IF")
+abline(h=10,lty=2,col="grey")
+```
+
+
+
+```{r}
+min_if <- 5
+year_cutoff <- 2010
+topN <- 20
+
+i='Christos Samakovlis'
+
+for(i in names(all_info)){
+  message(paste0("Proscessing: ",i))
+
+  sel2 <- all_info[[i]]@YearPubmed >= year_cutoff
+  
+  if_cutoff <- sort(res[[i]][sel2],decreasing = T)[ topN ]
+  
+  sel <- res[[i]] >= if_cutoff
+  sel3 <- res[[i]] >= min_if
+  tmp <- all_info[[i]]
+  filters <- cbind(sel2,sel,sel3,
+                   YEAR=tmp@YearPubmed,
+                   IF=res[[i]],
+                   JOURNAL=tmp@Title,
+                   ARTICLE=tmp@ArticleTitle)
+
+  
+  sels <- grep( "1", as.logical(filters[,1])*as.logical(filters[,2])*as.logical(filters[,3]) )
+
+  con <- file(paste0("papers_",i,'.txt'))
+  sink(con,append=TRUE)
+  sink(con,append=TRUE,type="message")
+
+  
+  for(j in sels){
+    k <- tmp@PMID[j]
+    tmp2 <- tmp@Author[[k]]
+    tmp2[is.na(tmp2)] <- ""
+    tmp2$LastName <- paste0(tmp2$CollectiveName,tmp2$LastName)
+    
+    x <- paste0(paste0( tmp2$LastName ," ", tmp2$Initials ,collapse = ", "),". ")
+    x1 <- paste0(sub(".* ","",i), " ", substring(sub(" .*","",i), 1, 1) )
+    if( grepl( paste0(x1,"[,.] "), x ) ){
+      x <- gsub(x1 , paste0("<u>",x1,"</u>"), x)
+    }
+    
+    cat( "<p>" )
+    cat( paste0( x ) )
+    cat( paste0("<b>", tmp@ArticleTitle[[j]],"</b>") )
+    cat( "\n" )
+    cat( paste0("<a href='https://doi.org/",tmp@DOI[[j]],"'>") )
+    cat( paste0( tmp@Title[[j]]) )
+    cat( "</a>" )
+    cat( paste0( " (" , month.abb[ tmp@MonthPubmed[[j]] ]," ", tmp@YearPubmed[[j]],") " ) )
+    
+    cat( "</p>" )
+    cat( "\n\n" )
+
+  }
+  
+  sink() 
+  sink(type="message")
+
+}
+```
+
+
+
+
+
+
+
+
+
+
