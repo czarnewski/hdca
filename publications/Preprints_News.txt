@@ -1,0 +1,16 @@
+<h3>RECENT PREPRINTS</h3>
+
+<p><b>2022-01-14</b>
+<b>BioRxiv</b>. <a href='https://doi.org/10.1101/2022.01.13.476169'>An essential function for autocrine Hedgehog signaling in epithelial proliferation and differentiation in the trachea</a>. Yin W, Liontos A, Koepke J, Ghoul M, Mazzocchi L, Liu X, Lu C, Wu H, Fysikopoulos A, Sountoulidis A, Seeger W, Ruppert C, Gunther A, Stainier D Y R, Samakovlis C</p>
+
+<p><b>2022-01-13</b>
+<b>BioRxiv</b>. <a href='https://doi.org/10.1101/2022.01.12.476082'>Scalable in situ single-cell profiling by electrophoretic capture of mRNA</a>. Borm L, Albiach A M, Mannens C C, Janusauskas J, Özgün C, Fernandez Garcia D, Hodge R D, Lein E, Codeluppi S, Linnarsson S</p>
+
+<p><b>2022-01-12</b>
+<b>BioRxiv</b>. <a href='https://doi.org/10.1101/2022.01.11.475631'>Developmental origins of cell heterogeneity in the human lung</a>. Sountoulidis A, Marco Salas S, Braun E, Avenel C, Bergenstrahle J, Vicari M, Czarnewski Barenco P V, Theelke J, Liontos A, Abalo X, Andrusivova Z, Asp M, Li X, Hu L, Sariyar S, Martinez Casals A, Ayoglu B, Firsova A B, Michaelsson J, Lundberg E, Wählby C, Sundström E, Linnarsson S, Lundeberg J, Nilsson M, Samakovlis C</p>
+
+<p><b>2022-01-05</b>
+<b>BioRxiv</b>. <a href='https://doi.org/10.1101/2020.08.24.252296'>The spatial landscape of gene expression isoforms in tissue sections</a>. Lebrigand K, Bergenstrahle J, Thrane K, Mollbrink A, Meletis K, Barbry P, Waldmann R, Lundeberg J</p>
+
+<hr>
+

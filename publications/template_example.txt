@@ -1,0 +1,8 @@
+<div style="display: flex;">
+<div style="justify-content: bottom; float: left; width: 160px; min-height: 40px;">
+<img src="https://hdca-sweden.scilifelab.se/wp-content/uploads/2022/01/bioRxiv_article-1.jpg" width="140px"></div>
+<div style="display: block; float: left;  text-align: middle; width: calc(100% - 150px); min-height: 40px;"> 2022-01-13
+A new Preprint is out!
+<b><a href="https://www.biorxiv.org/content/10.1101/2022.01.12.476082v1" target="_blank">Borm, et al . Scalable in situ single-cell profiling by electrophoretic capture of mRNA</a>
+BioRxiv</b></div>
+</div>
